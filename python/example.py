@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-import socket
+import dns.resolver, socket
 
 def ip_to_loki(ip):
     """
@@ -19,7 +19,8 @@ def resolve_local_address():
     """
     get our .loki address
     """
-    return ip_to_loki(get_lokinet_ip())
+    a = dns.resolver.query('localhost.loki', 'CNAME')
+    return a.rrset.to_text().split(' ')[-1]
 
 
 local_addr = resolve_local_address()
